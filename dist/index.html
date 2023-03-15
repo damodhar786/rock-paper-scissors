@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/main.min.css">
+</head>
+
+<body>
+    <main>
+        <h1 class="center" tabindex="0">Rock Paper Scissors</h1>
+        <a href="#playerMsg" class="skip-link">Skip Scoreboard</a>
+
+        <!-- Score Boards -->
+        <section class="scoreboard" id="scoreboard">
+            <h2 class="offscreen">Score Board</h2>
+
+            <!-- All Time -->
+            <section class="scoreboard__section" id="all-time">
+                <h3 class="offscreen">All Time Scores</h3>
+
+                <div class="scoreboard__header" aria-hidden="true">
+                    <p>Player</p>
+                    <p>All Time</p>
+                    <p>Computer</p>
+                </div>
+
+                <div class="scoreboard__row" role="row">
+                    <div class="scoreboard__score center" id="player_all_time_score" role="cell" aria-label="Player's All Time Wins"
+                        tabindex="0"> 0 </div>
+
+                    <div class="scoreboard__score center" id="computer_all_time_score" role="cell" aria-label="Computer's All Time Wins"
+                        tabindex="0"> 0 </div>
+                </div>
+            </section>
+
+            <!-- This Session -->
+            <section class="scoreboard__section" id="session">
+                <h3 class="offscreen">This Session's Score</h3>
+
+                <div class="scoreboard__header" aria-hidden="true">
+                    <p>Player</p>
+                    <p>Session</p>
+                    <p>Computer</p>
+                </div>
+
+                <div class="scoreboard__row" role="row">
+                    <div class="scoreboard__score center" id="player_session_score" role="cell" aria-label="Player's This Session Wins"
+                        tabindex="0"> 0 </div>
+
+                    <div class="scoreboard__score center" id="computer_session_score " role="cell" aria-label="Computer's This Session Wins"
+                        tabindex="0"> 0 </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Player's Game Board -->
+        <section class="playerGameBoard" id="playerGameBoard">
+            <h2 id="playerMsg" class="center" aria-label="Player Choses" tabindex="0">Player Choses.....</h2>
+            <div class="gameboard" id="gameboard">
+
+                <div class="gameboard__square" id="rock">
+                    <img src="img/rock.png" alt="select rock" tabindex="0">
+                </div>
+
+                <div class="gameboard__square" id="paper">
+                    <img src="img/paper.png" alt="select paper" tabindex="0">
+                </div>
+
+                <div class="gameboard__square" id="scissors">
+                    <img src="img/scissors.png" alt="select scissors" tabindex="0">
+                </div>
+            </div>
+        </section>
+
+        <!-- Computer's Game Board -->
+        <section class="computerGameBoard" id="computerGameBoard">
+            <h2 id="computerMsg" class="center" aria-label="Computer Choses" tabindex="0">Computer Choses.....</h2>
+            <div class="gameboard" id="computer_gameboard">
+
+                <div class="gameboard__square" id="computer_rock">
+                    <img src="img/rock.png" alt="select rock" tabindex="0">
+                </div>
+
+                <div class="gameboard__square" id="computer_paper">
+                    <img src="img/paper.png" alt="select paper" tabindex="0">
+                </div>
+
+                <div class="gameboard__square" id="computer_scissors">
+                    <img src="img/scissors.png" alt="select scissors" tabindex="0">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <form>
+        <button type="submit" class="playAgain hidden" id="playAgain">Play Again?</button>
+    </form>
+
+    <script src="app.js" type="module"></script>
+</body>
+
+</html>
