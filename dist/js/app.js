@@ -140,7 +140,7 @@ const countdownFade = () => {
 }
 
 const deleteCountdown = () => {
-    const countdown = document.querySelectorAll(".computerGameBoard gameboard__square p");
+    const countdown = document.querySelectorAll(".computerGameBoard .gameboard__square p");
     countdown.forEach(el => {
         el.remove();
     });
@@ -233,7 +233,7 @@ const updateScoreState = (winner) =>{
 
 // Update persistent data
 const updatePersistentData = (winner) =>{
-    const store = winner === "computer" ? "computerAllTime" : "playerAllTime";
+    const store = winner === "computer" ? "computerAllTimeScore" : "playerAllTimeScore";
     const score = winner === "computer" ? Game.getComputerAllTime() : Game.getPlayerAllTime();
     localStorage.setItem(store,score);
 }
@@ -267,10 +267,19 @@ const resetBoard = () => {
     });
     const computerSquares = document.querySelectorAll(".computerGameBoard .gameboard__square");
     computerSquares.forEach(el => {
-        if (el.firstElementChild) el.firstElementChild.remove();
-        if (el.id === "computer_rock") createGameImage("rock", el);
-        if (el.id === "computer_paper") createGameImage("paper", el);
-        if (el.id === "computer_scissors") createGameImage("scissors", el);
+        if (el.firstElementChild)
+        {
+            el.firstElementChild.remove();            
+        }
+        if (el.id === "computer_rock"){
+            createGameImage("rock", el);
+        }
+        if (el.id === "computer_paper"){
+            createGameImage("paper", el);
+        }
+        if (el.id === "computer_scissors"){
+            createGameImage("scissors", el);
+        }
     });
     document.getElementById("playerMsg").textContent = "Player Chooses.....";
     document.getElementById("computerMsg").textContent = "Computer Chooses.....";
@@ -281,7 +290,7 @@ const resetBoard = () => {
     Game.endGame();
 }
 
-const createGameImage = (icon, appendToElement) => {
+const createGameImage = (icon, appendToElement) => {    
     const image = document.createElement("img");
     image.src = `img/${icon}.png`;
     image.alt = icon;
