@@ -1,7 +1,5 @@
-import GameObj from "./Game";
+import GameObj from "./Game.js";
 const Game = new GameObj();
-console.log("Game Objects: ", Game);
-
 
 const initApp = () => {
 
@@ -9,7 +7,7 @@ const initApp = () => {
     initAllTimeData();
 
     // Update Scoreboard
-    updateScoreBoard();
+    updateScoreBoard();  
 
     // Listen For Palyer Choice
     listenForPlayerChoice();
@@ -21,10 +19,10 @@ const initApp = () => {
     listForPlayAgain();
 
     // Lock The Gameboard Height
-    lockComputerFameBoardHeight();
+    lockComputerGameBoardHeight();
 
     // Set Focus To Start New Game
-     document.querySelector("h1").focus;
+    document.querySelector("h1").focus;
 
 }
 
@@ -41,7 +39,6 @@ const initAllTimeData = () => {
 
 // Update Scoreboard
 const updateScoreBoard = () => {
-
     const playerAts = document.getElementById("player_all_time_score");
     playerAts.textContent = Game.getPlayerAllTime();
     playerAts.ariaLabel = `Player has ${Game.getPlayerAllTime()} All Time Wins.`;
@@ -56,11 +53,11 @@ const updateScoreBoard = () => {
 
     const computerSesn = document.getElementById("computer_session_score");
     computerSesn.textContent = Game.getComputerSession();
-    computerSesn.ariaLabel = `Computer Wins This Session with ${Game.getPlayerSession()}.`;
+    computerSesn.ariaLabel = `Computer Wins This Session with ${Game.getComputerSession()}.`;
 }
 
 const listenForPlayerChoice = () => {
-    const playerImages = document.querySelectorAll(".playerBoard .gameboard__square img");
+    const playerImages = document.querySelectorAll(".playerGameBoard .gameboard__square img");
     playerImages.forEach(img => {
         img.addEventListener("click", (event) => {
             if (Game.getActiveStatus()) return;
@@ -75,6 +72,7 @@ const listenForPlayerChoice = () => {
                 }
             });
             // Animation
+            computerAnimationSequence(playerChoice);
         });
     })
 }
@@ -92,13 +90,13 @@ const listenForEnterKey = () => {
 const listForPlayAgain = () => {
     document.querySelector("form").addEventListener("submit", (e) => {
         e.preventDefault();
-        resetBoard(); //TODO:
+        resetBoard();
     })
 }
 
 // Lock Computer Game board Height
-const lockComputerFameBoardHeight = () => {
-    const computerGameBoard = document.querySelector(".computerBoard .gameboard");
+const lockComputerGameBoardHeight = () => {
+    const computerGameBoard = document.querySelector(".computerGameBoard .gameboard");
     const computerGBstyles = getComputedStyle(computerGameBoard);
     const height = computerGBstyles.getPropertyValue("height");
     computerGameBoard.style.minHeight = height;
@@ -107,7 +105,185 @@ const lockComputerFameBoardHeight = () => {
 // Update Player Message on Click (Rock/Paper/Scissors)
 const updatePlayerMessage = (choice) => {
     let playerMsg = document.getElementById("playerMsg").textContent;
-    playerMsg += `${choice[0].toUpperCase()}${choice.slice(1)}!`;
+    playerMsg += `${properCase(choice)}!`;
     document.getElementById("playerMsg").textContent = playerMsg;
 }
 
+// Animation Sequence
+const computerAnimationSequence = (playerChoice) => {
+    let interval = 1000;
+    setTimeout(() => computerChoiceAnimation("computer_rock", 1), interval);
+    setTimeout(() => computerChoiceAnimation("computer_paper", 2), interval += 500);
+    setTimeout(() => computerChoiceAnimation("computer_scissors", 3), interval += 500);
+    setTimeout(() => countdownFade(), interval += 750);
+    setTimeout(() => {
+        deleteCountdown();
+        finishGameFlow(playerChoice);
+    }, interval += 1000);
+    setTimeout(() => askUserToPlayAgain(), interval += 1000);
+
+}
+
+const computerChoiceAnimation = (elementId, number) => {
+    const element = document.getElementById(elementId);
+    element.firstElementChild.remove();
+    const p = document.createElement("p");
+    p.textContent = number;
+    element.appendChild(p);
+}
+
+const countdownFade = () => {
+    const countdown = document.querySelectorAll(".computerGameBoard .gameboard__square p");
+    countdown.forEach(el => {
+        el.className = "fadeOut";
+    });
+}
+
+const deleteCountdown = () => {
+    const countdown = document.querySelectorAll(".computerGameBoard gameboard__square p");
+    countdown.forEach(el => {
+        el.remove();
+    });
+}
+
+const finishGameFlow = (playerChoice) => {
+    const computerChoice = getComputerChoice();
+    const winner = determineWinner(playerChoice, computerChoice);
+    const actionMessage = buildActionMessage(winner, playerChoice, computerChoice);
+    displayActionMessage(actionMessage);
+
+    // Update aria result
+    updateAriaResult(actionMessage, winner);
+
+    // Update the score state
+    updateScoreState(winner);
+
+    // Update persistent data
+    updatePersistentData(winner);
+
+    // Update score board
+    updateScoreBoard();
+
+    // Update Winner Message
+    updateWinnerMessage(winner);
+
+    // Display Computer Choice
+    displayComputerChoice(computerChoice);
+}
+
+const getComputerChoice = () => {
+    const randomNumber = Math.floor(Math.random() * 3);
+    const rpsArray = ["rock", "paper", "scissors"];
+    return rpsArray[randomNumber];
+}
+
+const determineWinner = (player, computer) => {
+    if (player === computer) return "tie";
+    if (
+        player === "rock" && computer === "paper" ||
+        player === "paper" && computer === "scissors" ||
+        player === "scissors" && computer === "rock"
+    ) return "computer";
+    return "player";
+
+}
+
+const buildActionMessage = (winner, playerChoice, computerChoice) => {
+    if (winner === 'tie') return "Tie Game!";
+    if (winner === "computer") {
+        const action = getAction(computerChoice);
+        return `${properCase(computerChoice)} ${action} ${properCase(playerChoice)}.`;
+    } else {
+        const action = getAction(playerChoice);
+        return `${properCase(playerChoice)} ${action} ${properCase(computerChoice)}.`;
+    }
+}
+
+const getAction = (choice) => {
+    return choice === "rock" ? "smashes" : choice === "paper" ? "wraps" : "cuts";
+}
+
+const properCase = (string) => {
+    return `${string[0].toUpperCase()}${string.slice(1)}`;
+}
+
+const displayActionMessage = (actionMessage) => {
+    const computerMsg = document.getElementById("computerMsg");
+    computerMsg.textContent = actionMessage;
+}
+
+// Update aria Result
+const updateAriaResult = (result, winner) => {
+    const ariaResult = document.getElementById("playAgain");
+    const winMessage =
+        winner === "player" 
+        ? "Congratulations, you are the Winner."
+        : winner === "computer"
+            ? "The computer is the Winner."
+            : "";
+    ariaResult.ariaLabel = `${result} ${winMessage} Click or press enter to play again.`;
+        
+}
+
+// Update the score state
+const updateScoreState = (winner) =>{
+    if(winner === "tie") return;
+    winner === "computer" ? Game.computerWins() : Game.playerWins();    
+}
+
+// Update persistent data
+const updatePersistentData = (winner) =>{
+    const store = winner === "computer" ? "computerAllTime" : "playerAllTime";
+    const score = winner === "computer" ? Game.getComputerAllTime() : Game.getPlayerAllTime();
+    localStorage.setItem(store,score);
+}
+
+// Update Winner Message
+const updateWinnerMessage = (winner) =>{
+    if(winner === "tie") return;
+    const message = winner === "computer" ? "🤖 Computer wins! 🤖"
+    : "🏆🔥 You Win! 🔥🏆";
+    const playerMsg = document.getElementById("playerMsg");
+    playerMsg.textContent = message;
+}
+
+// Display Computer Choice
+const displayComputerChoice =(choice) =>{
+    const square = document.getElementById("computer_paper");
+    createGameImage(choice, square);
+}
+
+const askUserToPlayAgain = () => {
+    const playAgain = document.getElementById("playAgain");
+    playAgain.classList.toggle("hidden");
+    playAgain.focus();
+}
+
+// Reset Board
+const resetBoard = () => {
+    const gameSquares = document.querySelectorAll(".gameboard div");
+    gameSquares.forEach(el => {
+        el.className = "gameboard__square";
+    });
+    const computerSquares = document.querySelectorAll(".computerGameBoard .gameboard__square");
+    computerSquares.forEach(el => {
+        if (el.firstElementChild) el.firstElementChild.remove();
+        if (el.id === "computer_rock") createGameImage("rock", el);
+        if (el.id === "computer_paper") createGameImage("paper", el);
+        if (el.id === "computer_scissors") createGameImage("scissors", el);
+    });
+    document.getElementById("playerMsg").textContent = "Player Chooses.....";
+    document.getElementById("computerMsg").textContent = "Computer Chooses.....";
+    const ariaResult = document.getElementById("playAgain");
+    ariaResult.ariaLabel = "Player Chooses.....";
+    document.getElementById("playerMsg").focus();
+    document.getElementById("playAgain").classList.toggle("hidden");
+    Game.endGame();
+}
+
+const createGameImage = (icon, appendToElement) => {
+    const image = document.createElement("img");
+    image.src = `img/${icon}.png`;
+    image.alt = icon;
+    appendToElement.appendChild(image);
+}

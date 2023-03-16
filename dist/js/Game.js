@@ -1,5 +1,5 @@
-export default class GameObj{
-    constructor(){
+export default class GameObj {
+    constructor() {
         this.active = false;
         this.playerAllTime = 0;
         this.computerAllTime = 0;
@@ -7,48 +7,48 @@ export default class GameObj{
         this.computerSession = 0;
     }
 
-    getActiveStatus(){
+    getActiveStatus() {
         return this.active;
     }
 
-    startGame(){
+    startGame() {
         this.active = true;
     }
 
-    endGame(){
+    endGame() {
         this.active = false;
     }
 
-    getPlayerAllTime(){
+    getPlayerAllTime() {
         return this.playerAllTime;
     }
 
-    setPlayerAlltime(number){
-     this.playerAllTime = number;
+    setPlayerAlltime(number) {
+        this.playerAllTime = number;
     }
 
-    getComputerAllTime(){
+    getComputerAllTime() {
         return this.computerAllTime;
     }
 
-    setComputerAllTime(number){
-        this.computerAllTime = number
+    setComputerAllTime(number) {
+        this.computerAllTime = number;
     }
 
-    getPlayerSession(){
+    getPlayerSession() {
         return this.playerSession;
     }
 
-    playerWins(){
+    playerWins() {
         this.playerSession += 1;
         this.playerAllTime += 1;
     }
 
-    getComputerSession(){
+    getComputerSession() {
         return this.computerSession;
     }
 
-    computerWins(){
+    computerWins() {
         this.computerSession += 1;
         this.computerAllTime += 1;
     }

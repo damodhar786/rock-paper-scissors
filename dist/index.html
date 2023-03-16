@@ -6,8 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./css/main.min.css">
+    <link rel="stylesheet" href="css/main.min.css">
+    <script src="js/app.js" type="module"></script>
+
 </head>
 
 <body>
@@ -52,7 +55,7 @@
                     <div class="scoreboard__score center" id="player_session_score" role="cell" aria-label="Player's This Session Wins"
                         tabindex="0"> 0 </div>
 
-                    <div class="scoreboard__score center" id="computer_session_score " role="cell" aria-label="Computer's This Session Wins"
+                    <div class="scoreboard__score center" id="computer_session_score" role="cell" aria-label="Computer's This Session Wins"
                         tabindex="0"> 0 </div>
                 </div>
             </section>
@@ -60,7 +63,7 @@
 
         <!-- Player's Game Board -->
         <section class="playerGameBoard" id="playerGameBoard">
-            <h2 id="playerMsg" class="center" aria-label="Player Choses" tabindex="0">Player Choses.....</h2>
+            <h2 id="playerMsg" class="center" aria-label="Player Chooses" tabindex="0">Player Chooses.....</h2>
             <div class="gameboard" id="gameboard">
 
                 <div class="gameboard__square" id="rock">
@@ -79,7 +82,7 @@
 
         <!-- Computer's Game Board -->
         <section class="computerGameBoard" id="computerGameBoard">
-            <h2 id="computerMsg" class="center" aria-label="Computer Choses" tabindex="0">Computer Choses.....</h2>
+            <h2 id="computerMsg" class="center" aria-label="Computer Chooses" tabindex="0">Computer Chooses.....</h2>
             <div class="gameboard" id="computer_gameboard">
 
                 <div class="gameboard__square" id="computer_rock">
@@ -93,6 +96,7 @@
                 <div class="gameboard__square" id="computer_scissors">
                     <img src="img/scissors.png" alt="select scissors" tabindex="0">
                 </div>
+                
             </div>
         </section>
     </main>
@@ -100,8 +104,6 @@
     <form>
         <button type="submit" class="playAgain hidden" id="playAgain">Play Again?</button>
     </form>
-
-    <script src="app.js" type="module"></script>
 </body>
 
 </html>
